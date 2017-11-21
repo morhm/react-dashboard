@@ -178,7 +178,7 @@ class Main extends Component {
     let sidebarContent =(
       <div style={styles.sbContentMain}>
         <div style={styles.profileSect} className='profile-sect'>
-          <img src='/images/myPicture.jpg' style={{width: '100px', height: '100px', borderRadius: 90}} />
+          <img src='images/myPicture.jpg' style={{width: '100px', height: '100px', borderRadius: 90}} />
           <p style={{marginTop: '10px'}}>Mark Orozco</p>
           <p style={{fontSize: '14px', lineHeight: '18px', fontWeight: '220', textAlign: 'center'}}> Messing around with React </p>
         </div>
