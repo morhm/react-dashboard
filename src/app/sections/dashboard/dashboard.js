@@ -21,7 +21,7 @@ const modules = [
   {
     title: 'Sweat. Shirt.',
     subtitle: 'The proof is in the pudding and the pamphlets',
-    img: '../images/earl-sweatshirt.jpg',
+    img: '/earl-sweatshirt.jpg',
     datePosted: 'October 3rd, 2017',
     bsCols: 6
   }
