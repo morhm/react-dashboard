@@ -201,7 +201,7 @@ class Main extends Component {
         maxWidth: '250px',
         minWidth: '200px',
         width: '300px',
-        backgroundImage: 'url(../images/sidebar-1.jpg)',
+        backgroundImage: 'url(/images/sidebar-1.jpg)',
         backgroundPosition: 'center top'
       },
       content: {
