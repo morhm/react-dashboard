@@ -17,7 +17,10 @@ export default class Profile extends Component {
 			profileDataStyle: {
 				display: "flex",
 				flexDirection: "column",
-				alignItems: "center"
+				alignItems: "center",
+				marginTop: "20px",
+				lineHeight: "14px",
+				wordWrap: "break-word"
 			}
 		}
 
@@ -25,11 +28,13 @@ export default class Profile extends Component {
 
 		return (
 			<div style={{display: "flex", flexDirection: "column", alignItems: "center"}}>
-				<img style={styles.profilePicStyle} src="../../../images/myPicture.jpg" className="card-img-top"/>
+				<img style={styles.profilePicStyle} src="images/myPicture.jpg" className="card-img-top"/>
 				<div className="card-block" style={styles.profileDataStyle}>
-					<p className="profile-name">{this.props.profileData.firstName + " " + this.props.profileData.lastName}</p>
-					<p className="company">{this.props.profileData.company}</p>
-					<p className="email">{this.props.profileData.email}</p>
+					<h5 className="profile-name">{this.props.profileData.firstName + " " + this.props.profileData.lastName}</h5>
+					<p className="profile-username">{this.props.profileData.username}</p>
+					<p className="profile-email">{this.props.profileData.email}</p>
+					<p className="profile-company">{this.props.profileData.company}</p>
+					<p className="profile-about" style={{lineHeight: '18px'}}>{this.props.profileData.aboutMe}</p>
 				</div>
 			</div>
 		)

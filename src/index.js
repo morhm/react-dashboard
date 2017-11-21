@@ -1,4 +1,4 @@
-import 'babel-polyfill';
+require('babel-polyfill');
 
 import React from 'react';
 import ReactDOM from 'react-dom';
@@ -11,3 +11,4 @@ ReactDOM.render(
   <Main/>,
   document.getElementById('root')
 );
+

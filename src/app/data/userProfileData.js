@@ -1,12 +1,6 @@
 const data = {
 	fields: [
 		{
-			label: 'Company',
-			class: 'company',
-			value: 'Froyota',
-			width: 4
-		},
-		{
 			label: 'Username',
 			class: 'username',
 			value: 'morhm',
@@ -16,6 +10,12 @@ const data = {
 			label: 'Email',
 			class: 'email',
 			value: 'markorozc@gmail.com',
+			width: 4
+		},
+		{
+			label: 'Company',
+			class: 'company',
+			value: 'Froyota',
 			width: 4
 		},
 		{
@@ -31,6 +31,17 @@ const data = {
 			width: 6
 		},
 		{
+			label: 'About Me',
+			class: 'aboutMe',
+			value: 'I M COOL',
+			width: 12
+		}
+	]
+}
+
+export default data;
+
+/*{
 			label: 'Address',
 			class: 'address',
 			value: '123 Easy St.',
@@ -53,14 +64,5 @@ const data = {
 			class: 'postalCode',
 			value: '3133',
 			width: 3
-		},
-		{
-			label: 'About Me',
-			class: 'aboutMe',
-			value: 'I M COOL',
-			width: 12
 		}
-	]
-}
-
-export default data;
+*/
