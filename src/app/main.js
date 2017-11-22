@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {Route, NavLink, HashRouter} from 'react-router-dom';
+import {Route, NavLink, HashRouter, Redirect} from 'react-router-dom';
 import {Header} from './header';
 import {Title} from './title';
 import {Footer} from './footer';
@@ -14,18 +14,33 @@ import Radium from 'radium';
 const mql = window.matchMedia(`(min-width: 990px)`);
 
 const styles = {
+  navSect: {
+    position: 'absolute',
+    top: '185px',
+    bottom: '0',
+    right: '0',
+    left: '0',
+    display: 'flex',
+    flexDirection: 'column',
+    justifyContent: 'flex-start',
+    alignItems: 'flex-start'
+  },
+  loButton: {
+    padding: '30px 20px',
+    marginTop: 'auto',
+    width: '100%'
+  },
   container: {
     display: 'flex',
     flexDirection: 'column',
     minHeight: '100%'
   },
   main: {
-    flex: 1,
-    display: 'flex',
-    flexDirection: 'column',
+    minHeight: '100%',
     backgroundColor: '#F7F7F8'
   },
   profileSect: {
+    height: '185px',
     display: 'flex',
     flexDirection: 'column',
     justifyContent: 'center',
@@ -39,7 +54,7 @@ const styles = {
     lineHeight: '30px'
   },
   sbContentMain: {
-    backgroundColor: 'rgba(255,0,255,0.5)',
+    backgroundColor: 'rgba(255,255,255,0.01)',
     position: 'absolute',
     left: 0,
     right: 0, 
@@ -48,6 +63,7 @@ const styles = {
   },
   sbContent: {
     padding: '30px 20px',
+    width: '100%'
   },
   sbItemStyle: {
     padding: '10px 20px',
@@ -55,24 +71,11 @@ const styles = {
     margin: '5px',
     fontWeight: '400',
     ':hover': {
-      backgroundColor: 'rgba(255,255,255,0.2)'
+      backgroundColor: 'rgba(255,255,255,0.56)'
     },
     color: 'white'
-  },
-  upgradeButton: {
-    margin: '5px',
-    marginTop: 'auto',
-    padding: '16px 20px',
-    textTransform: 'uppercase',
-    fontWeight: '400',
-    ':hover': {
-      backgroundColor: 'rgba(255,255,255,0.2)'
-    },
-    color: 'white',
-    position: 'absolute',
-    bottom: 0
   }
-};
+}
 
 class Main extends Component {
 
@@ -83,10 +86,12 @@ class Main extends Component {
       open: true,
       mql: mql,
       docked: true,
+      route: 'Dashboard'
     };
 
     this.mediaQueryChanged = this.mediaQueryChanged.bind(this);
     this.onSetSidebarOpen = this.onSetSidebarOpen.bind(this);
+    this.setActive = this.setActive.bind(this);
   }
 
   componentWillMount() {
@@ -106,71 +111,15 @@ class Main extends Component {
     this.setState({sidebarOpen: open});
   }
 
-  renderItems() {
-
-    let sidebarItems = {
-      items: [
-        {
-          title: 'dashboard',
-          img: 'url_here'
-        },
-        {
-          title: 'user-profile',
-          img: 'url_here'
-        },
-        {
-          title: 'table-list',
-          img: 'url_here'
-        },
-        {
-          title: 'typography',
-          img: 'url_here'
-        },
-        {
-          title: 'icons',
-          img: 'url_here'
-        },
-        {
-          title: 'maps',
-          img: 'url_here'
-        },
-        {
-          title: 'notifications',
-          img: 'url_here'
-        }
-      ],
-      finalButton: {
-        title: 'login',
-        img: 'url_here'
-      }
-    };
-
-    let topItems = sidebarItems.items.map( (item, index) => {
-      return (
-          <NavLink key={index} to={'/' + item.title}>
-            <div onClick={this.setActive} style={styles.sbItemStyle} key={index}>
-              {item.title}
-            </div>
-          </NavLink>
-      );
-    })
-
-    let bottomItem = (
-      <div key='-1' style={styles.upgradeButton}>
-        {sidebarItems.finalButton.title}
-      </div>
-    );
-
-    return topItems.concat(bottomItem);
-  }
-
   setActive(e) {
     $('.divActive').removeClass('divActive');
     $(e.target).addClass('divActive');
+    console.log(e.target.innerHTML);
+    this.setState({route: e.target.innerHTML});
   }
 
   componentDidMount() {
-    console.log('i am a component and i did mount');
+
   }
 
   render() {
@@ -180,10 +129,34 @@ class Main extends Component {
         <div style={styles.profileSect} className='profile-sect'>
           <img src='images/myPicture.jpg' style={{width: '100px', height: '100px', borderRadius: 90}} />
           <p style={{marginTop: '10px'}}>Mark Orozco</p>
-          <p style={{fontSize: '14px', lineHeight: '18px', fontWeight: '220', textAlign: 'center'}}> Messing around with React </p>
         </div>
-        <div style={styles.sbContent}>
-          {this.renderItems()}
+        <div style={styles.navSect}>
+          <div key='db' style={styles.sbContent}>
+            <NavLink to='/dashboard'>
+              <div key='db-d' onClick={this.setActive} style={styles.sbItemStyle}>
+                Dashboard
+              </div>
+            </NavLink>
+          </div>
+          <div key='up' style={styles.sbContent}>
+            <NavLink to='/user-profile'>
+              <div key='up-d' onClick={this.setActive} style={styles.sbItemStyle}>
+                User Profile
+              </div>
+            </NavLink>
+          </div>
+          <div key='tl' style={styles.sbContent}>
+            <NavLink to='/table-list'>
+              <div key='tl-d' onClick={this.setActive} style={styles.sbItemStyle}>
+                Table List
+              </div>
+            </NavLink>
+          </div>
+          <div key='lo' style={styles.loButton}>
+            <div key='lo-d' onClick={this.setActive} style={styles.sbItemStyle}>
+              Logout
+            </div>
+          </div>
         </div>
       </div>
     );
@@ -215,7 +188,7 @@ class Main extends Component {
       <HashRouter>
         <div>
           <Sidebar styles={sidebarStyle} sidebar={sidebarContent} open={this.state.sidebarOpen} docked={this.state.sidebarDocked} onSetOpen={this.onSetSidebarOpen}>
-            <Header/>
+            <Header route={this.state.route} />
             <main style={styles.main}>
               <Route path='/dashboard' component={Dashboard}/>
               <Route path='/user-profile' component={UserProfile}/>

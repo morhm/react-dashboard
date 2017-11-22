@@ -24,13 +24,20 @@ const styles = {
 };
 
 export class Header extends Component {
+
+  constructor(props) {
+    super(props);
+
+
+  }
+
   render() {
 
     return (
       <header style={styles.header}>
         <p style={styles.title}>
-          <a style={{color: 'gray', fontSize: "20px"}} href="https://github.com/FountainJS/generator-fountain-webapp" target="_blank" rel="noopener noreferrer">
-            Dashboard
+          <a style={{color: 'gray', fontSize: "20px"}}>
+            {this.props.route}
           </a>
         </p>
       </header>
