@@ -33,7 +33,7 @@ const data = {
 		{
 			label: 'About Me',
 			class: 'aboutMe',
-			value: 'I M COOL',
+			value: 'I like pina coladas and getting stuck in the rain. im not into yoga.',
 			width: 12
 		}
 	]

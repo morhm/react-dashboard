@@ -9,21 +9,24 @@ const modules = [
     subtitle: 'October 28th, 2017',
     img:'images/flog-gnaw.png',
     datePosted: 'October 1st, 2017',
-    bsCols: 3
+    bsCols: 3,
+    id: 'flogGnaw'
   },
   {
-    title: 'Fernando Llort',
-    subtitle: "El Salvador's Most Famous Artist",
-    img: 'images/funny-graph.jpg',
+    title: 'Quarterly Performance Tends',
+    subtitle: "Business is looking UPPPP",
+    img: 'images/horizontal-bar-chart.jpg',
     datePosted: 'October 2nd, 2017',
-    bsCols: 8
+    bsCols: 8,
+    id: 'chart'
   },
   {
     title: 'Sweat. Shirt.',
     subtitle: 'The proof is in the pudding and the pamphlets',
     img: 'images/earl-sweatshirt.jpg',
     datePosted: 'October 3rd, 2017',
-    bsCols: 6
+    bsCols: 6,
+    id: 'sweatshirt'
   }
 
 ];
@@ -66,14 +69,30 @@ class Dashboard extends Component {
         ':hover': {
           boxShadow: '0 0 11px rgba(33,33,33,.2)'
         }
+      },
+      flogGnawStyle: {
+        margin: '20px 0',
+        minWidth: '300px',
+        maxWidth: '300px'
+      },
+      chartStyle: {
+        margin: '20px 0',
+        minWidth: '300px'
+      },
+      sweatshirtStyle: {
+        margin: '20px 0',
+        minWidth: '300px',
+        maxWidth: '500px'
       }
+
     }
 
     return modules.map( (module, index) => {
-      let bootstrap = 'col-md-' + module.bsCols;
+      let classes = `col-md-${module.bsCols} col-md-offset-1 ${module.id}`;
+      let style =  styles[module.id + 'Style'];
 
       return (
-        <div className={bootstrap + ' col-md-offset-1'} style={{margin: '20px 0', minWidth: '250px'}} key={index}>
+        <div className={classes} style={style} key={index}>
           <div className='card' key={index} style={styles.cardStyle}>
             <div className='card-block' style={{padding: '20px'}}>
               <h4 className='card-title' style={{fontWeight: '300', fontSize: '22px'}} >{module.title}</h4>
@@ -92,9 +111,6 @@ class Dashboard extends Component {
   }
 
   render() {
-
-  	const styles = {
-		}
 
     return (
       <div className='container-fluid'>
@@ -115,13 +131,3 @@ Dashboard.defaultProps = {
 Dashboard.propTypes = {
   text: PropTypes.string
 };
-
-  /*      <div key={index} style={styles.moduleStyle} className={bootstrap + ' col-sm-offset-1'}>
-          <p style={styles.titleStyle}> {module.title} </p>
-          <p style={styles.subtitleStyle}> {module.subtitle} </p>
-          <img src={module.img} style={styles.imgStyle}/>
-          <div style={styles.footerStyle}>
-            <p style={styles.dateStyle}>{module.datePosted}</p>
-          </div>
-        </div>
-        */

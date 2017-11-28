@@ -44,13 +44,13 @@ export default class Profile extends Component {
 		const styles = {
 	  		profileSectStyle: {
 	  			border: '1px solid #E4E3E5',
-	  			padding: '10px',
+	  			padding: '10px 30px',
 	  			minWidth: "234px"
 	  		}
 	  	}
 
 		return (
-	  		<div className="col-md-4 profile-sect" style={{padding: '0 10px', marginBottom: '20px'}}>
+	  		<div className="col-md-4 push-md-8 profile-sect" style={{padding: '0 30px', marginBottom: '20px'}}>
 	    		<div className="card col-md-12" style={styles.profileSectStyle}>
 	    			{this.renderProfileData()}
 	    		</div>

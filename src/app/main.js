@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {Route, NavLink, HashRouter, Redirect} from 'react-router-dom';
+import {Route, Link, HashRouter, Redirect} from 'react-router-dom';
 import {Header} from './header';
 import {Title} from './title';
 import {Footer} from './footer';
@@ -7,6 +7,7 @@ import {Dashboard} from './sections/dashboard/dashboard.js';
 import Sidebar from 'react-sidebar';
 import {UserProfile} from './sections/user-profile/user-profile.js';
 import TableList from './sections/table-list/table-list.js';
+import Stepper from './sections/stepper/stepper.js';
 
 
 import Radium from 'radium';
@@ -66,12 +67,14 @@ const styles = {
     width: '100%'
   },
   sbItemStyle: {
+    WebkitTransition: 'all 150ms ease-in',
     padding: '10px 20px',
+    borderRadius: '4px',
     textTransform: 'uppercase',
     margin: '5px',
     fontWeight: '400',
     ':hover': {
-      backgroundColor: 'rgba(255,255,255,0.56)'
+      backgroundColor: 'rgba(255,255,255,0.56)',
     },
     color: 'white'
   }
@@ -92,6 +95,7 @@ class Main extends Component {
     this.mediaQueryChanged = this.mediaQueryChanged.bind(this);
     this.onSetSidebarOpen = this.onSetSidebarOpen.bind(this);
     this.setActive = this.setActive.bind(this);
+    this.renderModal = this.renderModal.bind(this);
   }
 
   componentWillMount() {
@@ -114,8 +118,31 @@ class Main extends Component {
   setActive(e) {
     $('.divActive').removeClass('divActive');
     $(e.target).addClass('divActive');
-    console.log(e.target.innerHTML);
     this.setState({route: e.target.innerHTML});
+  }
+
+  renderModal() {
+    return(
+      <div className="modal fade" id="exampleModal" tabIndex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div className="modal-dialog" role="document">
+          <div className="modal-content">
+            <div className="modal-header">
+              <h5 className="modal-title" id="exampleModalLabel">Modal title</h5>
+              <button type="button" className="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+            <div className="modal-body">
+              {this.state.route}
+            </div>
+            <div className="modal-footer">
+              <button type="button" className="btn btn-secondary" data-dismiss="modal">Close</button>
+              <button type="button" className="btn btn-primary">Save changes</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    )
   }
 
   componentDidMount() {
@@ -132,25 +159,25 @@ class Main extends Component {
         </div>
         <div style={styles.navSect}>
           <div key='db' style={styles.sbContent}>
-            <NavLink to='/dashboard'>
-              <div key='db-d' onClick={this.setActive} style={styles.sbItemStyle}>
+            <Link to='/dashboard'>
+              <div className="divActive" key='db-d' onClick={this.setActive} style={styles.sbItemStyle}>
                 Dashboard
               </div>
-            </NavLink>
+            </Link>
           </div>
           <div key='up' style={styles.sbContent}>
-            <NavLink to='/user-profile'>
+            <Link to='/user-profile'>
               <div key='up-d' onClick={this.setActive} style={styles.sbItemStyle}>
                 User Profile
               </div>
-            </NavLink>
+            </Link>
           </div>
           <div key='tl' style={styles.sbContent}>
-            <NavLink to='/table-list'>
-              <div key='tl-d' onClick={this.setActive} style={styles.sbItemStyle}>
-                Table List
+            <Link to='/stepper'>
+              <div key='st-d' onClick={this.setActive} style={styles.sbItemStyle}>
+                Stepper
               </div>
-            </NavLink>
+            </Link>
           </div>
           <div key='lo' style={styles.loButton}>
             <div key='lo-d' onClick={this.setActive} style={styles.sbItemStyle}>
@@ -192,9 +219,12 @@ class Main extends Component {
             <main style={styles.main}>
               <Route path='/dashboard' component={Dashboard}/>
               <Route path='/user-profile' component={UserProfile}/>
+              <Route path='/stepper' component={Stepper} />
               <Route path='/table-list' component={TableList}/>
+              <Route path='/' exact component={Dashboard}/>
             </main>
           </Sidebar>
+          {this.renderModal()}
         </div>
       </HashRouter>
     );

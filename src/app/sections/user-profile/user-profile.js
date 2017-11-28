@@ -15,11 +15,11 @@ class UserProfile extends Component {
 		this.validateData = this.validateData.bind(this);
 		this.renderDataSect = this.renderDataSect.bind(this);
 
-		let fieldValues = {}, profileData = {};
+		let fieldValues = {}, profileData = {}, errorObject = {}
 		data.fields.forEach( field => fieldValues[field.class] = field.value);
 		Object.assign(profileData, fieldValues);
 
-		this.state = {fieldValues, profileData, error: false};
+		this.state = {fieldValues, profileData, errorObject, error: false};
 	}
 
 	submitData() {
@@ -27,29 +27,48 @@ class UserProfile extends Component {
 	}
 
 	handleChange(event) {
-		let error = this.validateData(event.target);
+		let field = event.target.dataset.field;
+		console.log(field);
+		let val = event.target.value;
+		let error;
+
+		error = this.validateData(field, val);
+
 		if (error) {
-			$(event.target).removeClass("enabled");
+			$(event.target).removeClass("valid");
 			$(event.target).addClass("error");
-			//$(event.target).css("border", "1px solid red");
-			$(".submitButton").attr("disabled", "disabled");
 			this.setState({error: true});
 		} else {
-			$(".submitButton").removeAttr("disabled");
 			$(event.target).removeClass("error");
-			$(event.target).addClass("enabled");
-			this.setState({error: false});
+			$(event.target).addClass("valid");
+
+			let enable = true;
+			for (let fieldName in this.state.errorObject) {
+				if (this.state.errorObject[fieldName]) {
+					enable = false;
+				}
+			}
+			if (enable) {
+				this.setState({error: false});
+			}
 		}
 
 		let fieldValues = Object.assign({}, this.state.fieldValues);
-		fieldValues[event.target.dataset.field] = event.target.value;
+		fieldValues[field] = val;
 		this.setState({fieldValues});
 	}
 
-	validateData(field) {
-		if (field.value < 1) {
-			return true;
+	validateData(field, val) {
+		let errObject = this.state.errorObject;
+		let error = false;
+		if (val < 1) {
+			error = true;
+			errObject[field] = true;
 		}
+		if (!error) {
+			errObject[field] = false;
+		}
+		return error;
 	}
 
 	renderDataSect() {
@@ -74,44 +93,70 @@ class UserProfile extends Component {
 				':focus': {
 					outline: 'none'
 				}
+			},
+			textAreaStyle: {
+				resize: 'none',
+				border: '1px solid #E4E3E5',
+				padding: '5px'
+			},
+			submitButtonStyle: {
+				position: 'absolute',
+				bottom: 20
 			}
 		}
 
-		let sects = data.fields.map( (field, index) => {
-			return (
-				<div key={index} className={"col-md-" + field.width} style={styles.definitionStyle}>
-					<label className="text-muted" htmlFor="">{field.label}</label>
-					<input key={index} data-field={field.class} type="text" className="enabled" style={styles.inputStyle}
-					 value={this.state.fieldValues[field.class]} onChange={this.handleChange} />
+		let sects = (
+			<div className="row">
+				<div className="col-md-4" style={styles.definitionStyle}>
+					<label htmlFor="" className="text-muted">Username</label>
+					<input data-field="username" type="text" value={this.state.fieldValues["username"]} onChange={this.handleChange} style={styles.inputStyle} key="1" className="valid"/>
 				</div>
-			);
-		});
+				<div className="col-md-4" style={styles.definitionStyle}>
+					<label htmlFor="" className="text-muted">Email</label>
+					<input data-field="email" type="text" value={this.state.fieldValues["email"]} onChange={this.handleChange} style={styles.inputStyle} key="2" className="valid"/>
+				</div>
+				<div className="col-md-4" style={styles.definitionStyle}>
+					<label htmlFor="" className="text-muted">Company</label>
+					<input data-field="company" type="text" value={this.state.fieldValues["company"]} onChange={this.handleChange} style={styles.inputStyle} key="3" className="valid"/>
+				</div>
+				<div className="col-md-6" style={styles.definitionStyle}>
+					<label htmlFor="" className="text-muted">First Name</label>
+					<input data-field="firstName" type="text" value={this.state.fieldValues["firstName"]} onChange={this.handleChange} style={styles.inputStyle} key="4" className="valid"/>
+				</div>
+				<div className="col-md-6" style={styles.definitionStyle}>
+					<label htmlFor="" className="text-muted">Last Name</label>
+					<input data-field="lastName" type="text" value={this.state.fieldValues["lastName"]} onChange={this.handleChange} style={styles.inputStyle} key="5" className="valid"/>
+				</div>
+				<div className="col-md-12" style={styles.definitionStyle}>
+					<label htmlFor="" className="text-muted">About Me</label>
+					<textarea data-field="aboutMe" maxLength='100' type="text" key="6" value={this.state.fieldValues["aboutMe"]} onChange={this.handleChange} style={styles.textAreaStyle} className="valid ta" />
+				</div>
+			</div>
+		);
 
 		return (
-			<div className="col-md-8" style={styles.dataSectStyle}>
+			<div className="col-md-8 pull-md-4" style={styles.dataSectStyle}>
 				<form onSubmit={this.submitData}>
-					<div className="row">
-						{sects}
-					</div>
-					<input className="submitButton btn btn-primary" type="submit" value="submit"/>
+					{sects}
+					<input className="submitButton btn btn-primary" type="submit" value="submit" style={styles.submitButtonStyle} />
 				</form>
 			</div>
 		);
 	}
 
-	componentDidMount() {
-    	$(window).resize(function() {
-    		if ($(window).width() < 768) {
-    			$(".profile-sect").addClass("order-first");
-    		} else {
-    			$(".profile-sect").removeClass("order-first");
-    		}
-    	});
-  	}
-
   	componentDidUpdate() {
+  		if (this.state.error) {
+  			$(".submitButton").attr("disabled", "disabled");
+  		} else {
+  			$(".submitButton").removeAttr("disabled");
+  		}
+  
+  		$(".valid").css({borderTop: 'none',
+				borderLeft: 'none',
+				borderRight: 'none',
+				borderBottom: '1px solid #E4E3E5'});
+  		$(".ta.valid").css({border: '1px solid #E4E3E5'});
   		$(".error").css("border", "1px solid red");
-  		$(".enabled").css({"borderLeft": "none", "borderRight": "none", "borderTop": "none", "borderBottom": "1px solid #E4E3E5"});
   	}
 
     render() {
@@ -119,8 +164,8 @@ class UserProfile extends Component {
     	<div style={{padding: '20px'}}>
 	      <div className="container">
 		    <div className="row">
-		      {this.renderDataSect()}
 		      <Profile profileData={this.state.profileData} />
+		      {this.renderDataSect()}
 		    </div>
 		  </div>
 		</div>
