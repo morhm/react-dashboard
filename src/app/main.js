@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {Route, Link, HashRouter, Redirect} from 'react-router-dom';
+import {Route, Link, HashRouter, Redirect, Switch} from 'react-router-dom';
 import {Header} from './header';
 import {Title} from './title';
 import {Footer} from './footer';
@@ -8,6 +8,9 @@ import Sidebar from 'react-sidebar';
 import {UserProfile} from './sections/user-profile/user-profile.js';
 import TableList from './sections/table-list/table-list.js';
 import Stepper from './sections/stepper/stepper.js';
+import Info from './sections/info/info.js';
+
+import data from './data/userProfileData.js';
 
 
 import Radium from 'radium';
@@ -92,6 +95,9 @@ class Main extends Component {
       route: 'Dashboard'
     };
 
+    this.info = data.info;
+    console.log(this.state.route);
+
     this.mediaQueryChanged = this.mediaQueryChanged.bind(this);
     this.onSetSidebarOpen = this.onSetSidebarOpen.bind(this);
     this.setActive = this.setActive.bind(this);
@@ -125,7 +131,7 @@ class Main extends Component {
     return(
       <div className="modal fade" id="exampleModal" tabIndex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
         <div className="modal-dialog" role="document">
-          <div className="modal-content">
+          <div className="modal-content modal-lg" style={{width: "700px"}}>
             <div className="modal-header">
               <h5 className="modal-title" id="exampleModalLabel">Modal title</h5>
               <button type="button" className="close" data-dismiss="modal" aria-label="Close">
@@ -133,7 +139,7 @@ class Main extends Component {
               </button>
             </div>
             <div className="modal-body">
-              {this.state.route}
+              <Info route={this.state.route} />
             </div>
             <div className="modal-footer">
               <button type="button" className="btn btn-secondary" data-dismiss="modal">Close</button>
@@ -217,14 +223,16 @@ class Main extends Component {
           <Sidebar styles={sidebarStyle} sidebar={sidebarContent} open={this.state.sidebarOpen} docked={this.state.sidebarDocked} onSetOpen={this.onSetSidebarOpen}>
             <Header route={this.state.route} />
             <main style={styles.main}>
-              <Route path='/dashboard' component={Dashboard}/>
-              <Route path='/user-profile' component={UserProfile}/>
-              <Route path='/stepper' component={Stepper} />
-              <Route path='/table-list' component={TableList}/>
-              <Route path='/' exact component={Dashboard}/>
+              <Switch>
+                <Route path='/dashboard' component={Dashboard}/>
+                <Route path='/user-profile' component={UserProfile}/>
+                <Route path='/stepper' component={Stepper} />
+                <Route path='/table-list' component={TableList}/>
+                <Redirect from='/' to='/dashboard' />
+              </Switch>
             </main>
           </Sidebar>
-          {this.renderModal()}
+          <Info route={this.state.route} />
         </div>
       </HashRouter>
     );

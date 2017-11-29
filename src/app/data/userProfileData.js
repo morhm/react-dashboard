@@ -1,4 +1,9 @@
 const data = {
+	info: {
+		"Dashboard": "I am the walrus",
+		"User Profile": "Info for user profile",
+		"Stepper": "Info for stepper"
+	},
 	fields: [
 		{
 			label: 'Username',

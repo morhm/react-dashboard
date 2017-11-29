@@ -66,6 +66,7 @@ class Dashboard extends Component {
         fontSize: '12px'
       },
       cardStyle: {
+        WebkitTransition: 'all 150ms ease-in',
         ':hover': {
           boxShadow: '0 0 11px rgba(33,33,33,.2)'
         }
